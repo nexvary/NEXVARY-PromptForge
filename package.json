@@ -1,6 +1,6 @@
 {
   "name": "nexvary-promptforge",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "NEXVARY PromptForge offline desktop",
   "main": "desktop/main.cjs",
