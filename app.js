@@ -19,7 +19,16 @@ function renderCards(){const list=found(),target=el("cards");target.replaceChild
 const current=()=>prompts.find(p=>p.id===selected);
 function currentValues(){return Object.fromEntries([...el("vars").querySelectorAll("input")].map(input=>[input.dataset.variable,input.value]))}
 function renderPreview(){const p=current();el("title").textContent=p?.title||"اختر قالبًا";el("desc").textContent=p?.description||"";el("source").textContent=p?"المصدر: "+p.source+" • "+p.license:"";el("preview").textContent=p?.template||"";el("vars").replaceChildren();for(const v of vars(p?.template||"")){const label=node("label","",v.replaceAll("_"," ")),input=node("input");input.maxLength=1500;input.placeholder="أدخل "+v;input.dataset.variable=v;input.oninput=()=>el("preview").textContent=fill(p.template,currentValues());label.append(input);el("vars").append(label)}el("copyTemplate").disabled=!p;el("sendToCreator").disabled=!p;el("deletePersonal").hidden=!p?.id.startsWith("user-") }
-async function copy(text){try{await navigator.clipboard.writeText(text);toast("تم النسخ")}catch{toast("تعذر النسخ التلقائي؛ حدّد النص وانسخه يدويًا")}}
+async function copy(text){
+ try{if(!navigator.clipboard?.writeText)throw Error("unsupported");await navigator.clipboard.writeText(text);toast("تم النسخ");return}
+ catch{
+  const t=node("textarea");t.value=String(text);t.readOnly=true;
+  t.style.cssText="position:fixed;inset:auto auto 0 -10000px;opacity:0";
+  document.body.append(t);t.focus();t.select();
+  let copied=false;try{copied=document.execCommand("copy")}catch{}
+  t.remove();toast(copied?"تم النسخ":"تعذر النسخ التلقائي؛ حدّد النص وانسخه يدويًا");
+ }
+}
 el("copyTemplate").onclick=()=>copy(el("preview").textContent);
 el("deletePersonal").onclick=()=>{
  const p=current();
