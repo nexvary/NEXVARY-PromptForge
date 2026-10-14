@@ -15,3 +15,8 @@
 .quality-report{border:1px solid #486687;background:#172b42;border-radius:11px;padding:12px;margin:13px 0;font-size:12px;line-height:1.8;color:#d9ebff}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[role=button]:focus-visible{outline:2px solid #83cbff;outline-offset:3px}
 @media(max-width:850px){.personal-editor{grid-column:1}}
+
+.card-vector{display:grid;place-items:center;width:40px;height:40px;color:#83ccff;background:linear-gradient(135deg,#28557f,#192c46);border:1px solid #48759a;border-radius:11px}
+nav button{display:inline-flex;align-items:center;gap:9px}
+nav button svg{height:18px;width:18px;flex:none}
+@media(max-width:560px){.card{min-height:134px}.card h4{margin:9px 0 5px}.card-vector{width:34px;height:34px}.card-vector svg{width:21px;height:21px}}
