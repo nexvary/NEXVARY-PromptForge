@@ -41,3 +41,12 @@ Do not claim a release is available until its workflow has completed successfull
 - Android and Windows release-signing requires owners' private certificates. Keep signing material in private secrets.
 
 MIT application code; project-written seed prompts are CC0. Do not import other copyrighted prompt catalogs without verifying permitted reuse.
+
+
+## v0.4 Personal Studio
+- Add an original private prompt from the Manage Library tab; the app will save it on the current device, searchable under the selected category.
+- User-created prompts default to the `PRIVATE` license, and are **not** part of community exports.
+- Delete personal prompts through the library preview. Shared source prompts cannot be deleted.
+- Export/import a personal backup of custom prompts and favorite IDs.
+- Lightweight Arabic↔English synonym matching is available offline; this is **not** an embedding model.
+- A six-item structure checklist highlights missing elements in the locally composed prompt, and does not grade AI accuracy.
