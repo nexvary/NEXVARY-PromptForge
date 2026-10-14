@@ -1,22 +1,45 @@
 # NEXVARY PromptForge
 
-Arabic-first, offline-capable prompt library and structured prompt generator — foundation v0.1.0.
+Arabic-first, responsive, open-source prompt-library and structured prompt composer.
 
-**Implemented:** responsive Arabic RTL browser UI; 25 starter templates, including the user-provided High Performance AI execution protocol in 12 categories; keyword search; favorites; variable substitution; offline structured prompt composition; JSON import/export with supported license checks and deduplication; local-only browser storage; Node tests and GitHub Actions CI.
+## Stage 0.2: CC0 community catalog
 
-**Not yet implemented:** automated collection of thousands of third-party prompts, semantic search, remote AI completion, Android/Windows packaged builds. We will only import third-party content after reviewing licensing and attribution.
+The app ships 25 starter templates in 12 categories, including HIGH PERFORMANCE AI — EXECUTION PROTOCOL.
 
-## Run
-Serve this repository as a static website over HTTP(S). No API keys or build dependencies are required. GitHub Pages can be enabled under Settings > Pages > GitHub Actions. The deployment workflow will attempt to publish on successful pushes to main.
+The automated build imports prompt content from https://github.com/f/prompts.chat/blob/main/prompts.csv. The upstream dataset is explicitly CC0 1.0. Each GitHub Actions build downloads the latest CSV, validates columns and fields, deduplicates prompt texts, applies an auditable keyword categorizer, and generates a collection of JSON shards with contributor references, SHA-256 checksum, and a timestamp.
 
-## Test
-Node.js 20+: run `node --test` in the repository (CI does this automatically).
+Counts are determined by the real build, not fabricated or hardcoded. Some community prompts are in English; the application labels remain in Arabic.
 
-## JSON import example
-```json
-[{"id":"my-demo","category":"marketing","title":"عنوان","description":"وصف","template":"أنشئ إعلانًا عن {{product}}","license":"CC0-1.0","source":"Original author"}]
-```
+### Features
+- Keyword search, category filters, 48-card pagination, favorites, editable placeholders, copy.
+- Local offline-capable structured prompt composer; no AI API key required.
+- Manual JSON import/export with known licenses.
+- Personal prompts and favorites persist in localStorage; externally downloaded community prompts do not, to prevent quota exhaustion.
 
-Supported import licenses: CC0-1.0, CC-BY-4.0, MIT and Apache-2.0. Attribution obligations remain with the importer. Imported data stays in browser localStorage. Do not import files unless reuse rights are confirmed.
+### GitHub Actions
 
-Source code MIT. Starter prompts written for this project are CC0-1.0.
+The workflow in .github/workflows/ci.yml runs unit tests and syntax checks, builds the downloadable promptforge-web-catalog artifact, then attempts a GitHub Pages deployment from main. The dataset refreshes every Monday.
+
+For hosting, visit repository Settings > Pages > Source > GitHub Actions. Enable GitHub Actions. If the source is inaccessible or fewer than 500 valid prompts are returned, the build fails visibly rather than inventing successful ingestion.
+
+Node.js 22+ tests: node --test
+
+Local build (internet required):
+1. Create a dist folder and copy index.html, app.js, engine.mjs, styles.css, icon.svg, manifest.webmanifest and sw.js.
+2. Run node scripts/build-catalog.mjs --out dist.
+3. Serve dist through any ordinary static web server.
+
+The site still works with 25 original prompts when an external catalog is unavailable.
+
+### JSON import shape
+
+Array elements must include: id, category, title, description, template, license, source.
+Example: id=my-demo; category=marketing; title=إعلان; description=قالب; template=اكتب إعلانًا عن {{product}}; license=CC0-1.0; source=Author.
+
+### Limitations
+- Keyword categorization is approximate, not AI classification.
+- No Android APK, Windows EXE, semantic/vector search, remote AI refinement or automatic translation yet.
+- A configured CI workflow is NOT proof that it has passed; always inspect job results.
+- Untrusted prompt data is rendered as text, not executed as instructions or HTML.
+
+Code license MIT; original seed prompts CC0. Review licenses and attribution before importing other projects.
