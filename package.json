@@ -1,0 +1,41 @@
+{
+  "name": "nexvary-promptforge",
+  "version": "0.3.0",
+  "private": true,
+  "description": "NEXVARY PromptForge offline desktop",
+  "main": "desktop/main.cjs",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test",
+    "desktop": "electron .",
+    "package:windows": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "33.4.11",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "com.nexvary.promptforge",
+    "productName": "NEXVARY PromptForge",
+    "asar": true,
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "NEXVARY-PromptForge-${version}-${arch}-Portable.${ext}"
+    }
+  }
+}
