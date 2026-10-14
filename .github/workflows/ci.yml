@@ -22,6 +22,7 @@ jobs:
           node --check engine.mjs
           node --check search.mjs
           node --check personal.mjs
+          node --check icons.mjs
           node --check server/index.mjs
           node --check scripts/library-builder.mjs
           node --check scripts/build-catalog.mjs
@@ -38,7 +39,7 @@ jobs:
       - name: Prepare website
         run: |
           mkdir -p dist
-          cp index.html app.js engine.mjs search.mjs personal.mjs styles.css icon.svg manifest.webmanifest sw.js dist/
+          cp index.html app.js engine.mjs search.mjs personal.mjs icons.mjs styles.css icon.svg manifest.webmanifest sw.js dist/
       - name: Build verified CC0 catalog
         run: node scripts/build-catalog.mjs --out dist
       - uses: browser-actions/setup-chrome@v1
