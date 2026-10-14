@@ -2,7 +2,7 @@
 
 Arabic-first, offline-capable prompt library and structured prompt generator — foundation v0.1.0.
 
-**Implemented:** responsive Arabic RTL browser UI; 24 original starter templates in 12 categories; keyword search; favorites; variable substitution; offline structured prompt composition; JSON import/export with supported license checks and deduplication; local-only browser storage; Node tests and GitHub Actions CI.
+**Implemented:** responsive Arabic RTL browser UI; 25 starter templates, including the user-provided High Performance AI execution protocol in 12 categories; keyword search; favorites; variable substitution; offline structured prompt composition; JSON import/export with supported license checks and deduplication; local-only browser storage; Node tests and GitHub Actions CI.
 
 **Not yet implemented:** automated collection of thousands of third-party prompts, semantic search, remote AI completion, Android/Windows packaged builds. We will only import third-party content after reviewing licensing and attribution.
 
