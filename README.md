@@ -1,45 +1,43 @@
-# NEXVARY PromptForge
+# NEXVARY PromptForge — Prompt Intelligence Studio
 
-Arabic-first, responsive, open-source prompt-library and structured prompt composer.
+**v0.3.0 foundation:** Arabic-first, RTL, open-source prompt library, ranked multilingual search, native-packaged Android app and Windows portable desktop, offline structured prompt generator, and optional AI-powered prompt refinement through a user-hosted server.
 
-## Stage 0.2: CC0 community catalog
+## Verified source catalog
 
-The app ships 25 starter templates in 12 categories, including HIGH PERFORMANCE AI — EXECUTION PROTOCOL.
+The build pipeline imports from the [prompts.chat CC0 library](https://github.com/f/prompts.chat/blob/main/prompts.csv), verifies input, records attribution, removes duplicates, and splits JSON files. A successful previous CI run imported 1,986 prompts, in addition to 25 native seed prompts; future import counts may change. Original prompts can be used offline after installing the web app. Android/Windows workflows copy source data inside their application packages for offline use.
 
-The automated build imports prompt content from https://github.com/f/prompts.chat/blob/main/prompts.csv. The upstream dataset is explicitly CC0 1.0. Each GitHub Actions build downloads the latest CSV, validates columns and fields, deduplicates prompt texts, applies an auditable keyword categorizer, and generates a collection of JSON shards with contributor references, SHA-256 checksum, and a timestamp.
+## Features
 
-Counts are determined by the real build, not fabricated or hardcoded. Some community prompts are in English; the application labels remain in Arabic.
+- Arabic RTL responsive UI; 12 categories; favorites, variable editing, import and export of licensed JSON.
+- Search ranks title, description and body matches, normalizes Arabic spelling, and tolerates minor English title typos.
+- Local prompt composer supports task, audience, constraints, language, model and desired format, without an AI API key.
+- Optional **AI Refine** sends the prompt only after user confirmation to an explicitly configured HTTPS server. The AI key remains server-side. See [AI-SERVER](docs/AI-SERVER.md).
+- PWA caching, Android and Windows wrappers with native packaging workflows. Note: debug Android APK is not Play Store release-signed.
 
-### Features
-- Keyword search, category filters, 48-card pagination, favorites, editable placeholders, copy.
-- Local offline-capable structured prompt composer; no AI API key required.
-- Manual JSON import/export with known licenses.
-- Personal prompts and favorites persist in localStorage; externally downloaded community prompts do not, to prevent quota exhaustion.
+## Download and build verification
 
-### GitHub Actions
+[GitHub Actions](https://github.com/nexvary/NEXVARY-PromptForge/actions) has three workflows:
 
-The workflow in .github/workflows/ci.yml runs unit tests and syntax checks, builds the downloadable promptforge-web-catalog artifact, then attempts a GitHub Pages deployment from main. The dataset refreshes every Monday.
+- **Verify, Build Catalog and Deploy:** tests, builds the static web app, archives `promptforge-web-catalog`, and publishes GitHub Pages on main if repository settings allow.
+- **Android Debug APK:** bundles the website and source catalog and builds `NEXVARY-PromptForge-Android-Debug-APK` on Ubuntu.
+- **Windows Portable EXE:** packages `NEXVARY-PromptForge-Windows-Portable` on a Windows runner using Electron.
 
-For hosting, visit repository Settings > Pages > Source > GitHub Actions. Enable GitHub Actions. If the source is inaccessible or fewer than 500 valid prompts are returned, the build fails visibly rather than inventing successful ingestion.
+Do not claim a release is available until its workflow has completed successfully and the artifact is listed. Unpack GitHub Actions artifacts before installation. Windows binaries may show a reputation warning because they are unsigned; the Android debug APK is for testing, not Play Store distribution.
 
-Node.js 22+ tests: node --test
+### Build prerequisites
 
-Local build (internet required):
-1. Create a dist folder and copy index.html, app.js, engine.mjs, styles.css, icon.svg, manifest.webmanifest and sw.js.
-2. Run node scripts/build-catalog.mjs --out dist.
-3. Serve dist through any ordinary static web server.
+- Node.js 22+ for server and tests; `node --test` for unit tests.
+- Internet access for downloading the CC0 source CSV during build.
+- GitHub Pages: Settings → Pages → Build and deployment → Source: **GitHub Actions**. The repository owner must enable it if deployment fails.
+- Android CI config targets Android SDK 35 with AGP 8.7.3, Gradle 8.9, Java 17.
+- Windows CI uses Node.js 22, Electron and electron-builder; does not require a CLI for end users.
 
-The site still works with 25 original prompts when an external catalog is unavailable.
+## Security and limitations
 
-### JSON import shape
+- No bundled secrets; optional AI server takes API key from environment variables and should be deployed behind TLS. IP rate limits alone do not replace public authentication.
+- External templates are **untrusted data**, displayed as plain text rather than executed instructions.
+- Dataset categorization is heuristic, and some community text is English. AI translation and semantic embeddings are not yet implemented. Ranked lexical search is not the same as true semantic search.
+- There is no cloud user account or multi-device sync; favorites are per-device.
+- Android and Windows release-signing requires owners' private certificates. Keep signing material in private secrets.
 
-Array elements must include: id, category, title, description, template, license, source.
-Example: id=my-demo; category=marketing; title=إعلان; description=قالب; template=اكتب إعلانًا عن {{product}}; license=CC0-1.0; source=Author.
-
-### Limitations
-- Keyword categorization is approximate, not AI classification.
-- No Android APK, Windows EXE, semantic/vector search, remote AI refinement or automatic translation yet.
-- A configured CI workflow is NOT proof that it has passed; always inspect job results.
-- Untrusted prompt data is rendered as text, not executed as instructions or HTML.
-
-Code license MIT; original seed prompts CC0. Review licenses and attribution before importing other projects.
+MIT application code; project-written seed prompts are CC0. Do not import other copyrighted prompt catalogs without verifying permitted reuse.
