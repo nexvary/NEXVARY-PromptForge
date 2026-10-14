@@ -1,0 +1,41 @@
+name: Windows Portable EXE
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, dev/product-completion]
+    paths:
+      - "desktop/**"
+      - "package.json"
+      - "app.js"
+      - "engine.mjs"
+      - "index.html"
+      - "styles.css"
+      - "scripts/**"
+      - ".github/workflows/windows.yml"
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build static website and community catalog
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          Copy-Item index.html,app.js,engine.mjs,styles.css,icon.svg,manifest.webmanifest,sw.js dist/
+          node scripts/build-catalog.mjs --out dist
+      - name: Install Electron packaging tools
+        run: npm install --no-audit --no-fund
+      - name: Package portable Windows application
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: npm run package:windows
+      - name: Upload Windows EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXVARY-PromptForge-Windows-Portable
+          path: release/*.exe
+          if-no-files-found: error
+          retention-days: 30
