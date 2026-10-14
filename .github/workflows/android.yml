@@ -1,0 +1,51 @@
+name: Android Debug APK
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches: [main, dev/product-completion]
+    paths:
+      - "android/**"
+      - "app.js"
+      - "engine.mjs"
+      - "index.html"
+      - "styles.css"
+      - "scripts/**"
+      - ".github/workflows/android.yml"
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - name: Install Android SDK 35 components
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+      - name: Bundle offline website
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp index.html app.js engine.mjs search.mjs styles.css icon.svg manifest.webmanifest sw.js android/app/src/main/assets/
+          mkdir -p /tmp/promptforge-catalog-build
+          node scripts/build-catalog.mjs --out /tmp/promptforge-catalog-build
+          cp /tmp/promptforge-catalog-build/catalog-manifest.json android/app/src/main/assets/
+          cp -r /tmp/promptforge-catalog-build/catalog android/app/src/main/assets/
+      - name: Build debug APK
+        run: gradle -p android :app:assembleDebug --no-daemon --stacktrace
+      - name: Publish Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXVARY-PromptForge-Android-Debug-APK
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+          if-no-files-found: error
