@@ -5,3 +5,13 @@
 .ai-panel input{width:100%;padding:12px;border:1px solid var(--line);background:#0a1727;color:var(--text);border-radius:10px;font-size:12px;min-width:0}
 .ai-panel :is(button,input):focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 #more{margin:18px auto;display:block;min-width:180px}
+
+/* Personal Studio — intentionally appended to preserve approved interface */
+.personal-editor{grid-column:1/-1}
+.personal-editor p{color:var(--muted);font-size:13px;line-height:1.8}
+.personal-editor .form{max-width:980px}
+.personal-editor textarea{min-height:155px;resize:vertical}
+.danger{border:1px solid #ae5e67;background:#502a36;color:#ffccd1;border-radius:10px;padding:11px;margin-top:12px;width:100%;font-size:12px;font-weight:700}
+.quality-report{border:1px solid #486687;background:#172b42;border-radius:11px;padding:12px;margin:13px 0;font-size:12px;line-height:1.8;color:#d9ebff}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[role=button]:focus-visible{outline:2px solid #83cbff;outline-offset:3px}
+@media(max-width:850px){.personal-editor{grid-column:1}}
