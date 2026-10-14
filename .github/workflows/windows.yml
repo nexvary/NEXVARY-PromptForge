@@ -24,7 +24,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
-          Copy-Item index.html,app.js,engine.mjs,styles.css,icon.svg,manifest.webmanifest,sw.js dist/
+          Copy-Item index.html,app.js,engine.mjs,search.mjs,styles.css,icon.svg,manifest.webmanifest,sw.js dist/
           node scripts/build-catalog.mjs --out dist
       - name: Install Electron packaging tools
         run: npm install --no-audit --no-fund
