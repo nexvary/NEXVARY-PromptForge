@@ -10,6 +10,7 @@ on:
       - "app.js"
       - "search.mjs"
       - "personal.mjs"
+      - "icons.mjs"
       - "engine.mjs"
       - "index.html"
       - "styles.css"
@@ -27,7 +28,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
-          Copy-Item index.html,app.js,engine.mjs,search.mjs,personal.mjs,styles.css,icon.svg,manifest.webmanifest,sw.js dist/
+          Copy-Item index.html,app.js,engine.mjs,search.mjs,personal.mjs,icons.mjs,styles.css,icon.svg,manifest.webmanifest,sw.js dist/
           node scripts/build-catalog.mjs --out dist
       - name: Install Electron packaging tools
         run: npm install --no-audit --no-fund
