@@ -21,3 +21,13 @@ test("minor English typos are tolerated in titles",()=>{
  const r=rankedSearch(createSearchIndex(data),"developr");
  assert.equal(r[0].id,"b");
 });
+
+test("offline synonym lookup bridges Arabic to English marketing",()=>{
+ const rows=[{id:"m1",title:"Marketing assistant",description:"Sales and advertising",template:"Write a plan.",category:"marketing"}];
+ const matches=rankedSearch(createSearchIndex(rows),"تسويق");
+ assert.equal(matches[0].id,"m1");
+});
+test("offline synonym lookup bridges English to Arabic cybersecurity",()=>{
+ const rows=[{id:"s1",title:"خبير الأمن السيبراني",description:"حماية الشبكات",template:"مراجعة الشبكات.",category:"security"}];
+ assert.equal(rankedSearch(createSearchIndex(rows),"security").length,1);
+});
