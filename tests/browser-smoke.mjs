@@ -33,8 +33,8 @@ try{
  await page.locator("#search").fill("قالب الاختبار الشخصي");
  assert.equal(await page.locator(".card").count(),1);
  await page.locator(".card").first().click();
- await page.locator("#deletePersonal").click();
  page.on("dialog",dialog=>dialog.accept());
+ await page.locator("#deletePersonal").click();
  // Deletion dialog above is accepted through the registered handler in subsequent checks.
  await page.screenshot({path:"dist/browser-desktop.png",fullPage:true});
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
