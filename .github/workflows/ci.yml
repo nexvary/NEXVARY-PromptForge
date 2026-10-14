@@ -21,6 +21,8 @@ jobs:
           node --check app.js
           node --check engine.mjs
           node --check search.mjs
+          node --check personal.mjs
+          node --check icons.mjs
           node --check server/index.mjs
           node --check scripts/library-builder.mjs
           node --check scripts/build-catalog.mjs
@@ -37,9 +39,27 @@ jobs:
       - name: Prepare website
         run: |
           mkdir -p dist
-          cp index.html app.js engine.mjs search.mjs styles.css icon.svg manifest.webmanifest sw.js dist/
+          cp index.html app.js engine.mjs search.mjs personal.mjs icons.mjs styles.css icon.svg manifest.webmanifest sw.js dist/
       - name: Build verified CC0 catalog
         run: node scripts/build-catalog.mjs --out dist
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+      - name: Install isolated browser test runner
+        run: npm install --prefix /tmp/promptforge-browser --no-save --no-audit --no-fund playwright-core@1.56.1
+      - name: Real desktop/mobile browser smoke and screenshots
+        env:
+          PLAYWRIGHT_MODULE: /tmp/promptforge-browser/node_modules/playwright-core/index.mjs
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: node tests/browser-smoke.mjs
+      - name: Publish QA screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: PromptForge-UI-Screenshots
+          path: |
+            dist/browser-desktop.png
+            dist/browser-mobile.png
+          if-no-files-found: error
+          retention-days: 30
       - name: Publish downloadable bundle
         uses: actions/upload-artifact@v4
         with:

@@ -4,6 +4,23 @@ function tokens(s){return clean(s).split(" ").filter(x=>x.length>1).map(x=>{
  if(/^[a-z]+$/.test(x)&&x.length>5)return x.replace(/(ing|ies|ed|es|s)$/,"");
  return x;
 })}
+const synonymGroups=[
+ ["اعلان","اعلانات","ads","advertis","marketing","تسويق"],
+ ["برمجه","كود","program","programming","code","coding","developer","تطوير"],
+ ["صور","صوره","تصوير","image","photo","photography","illustration"],
+ ["فيديو","video","film","movie","مونتاج"],
+ ["عقد","عقود","contract","legal","قانون","law"],
+ ["تعليم","تعلم","دراسه","education","study","learning","teacher"],
+ ["امن","سيبراني","security","cybersecurity","حمايه"],
+ ["تجاره","مبيعات","بيع","shop","sales","commerce"],
+ ["بحث","research","دراسه","academic"],
+ ["وكيل","agents","agent","automation","اوتوماتيكي"]
+];
+const synonyms=new Map();
+for(const group of synonymGroups){
+ const normalized=[...new Set(group.flatMap(tokens))];
+ for(const word of normalized)synonyms.set(word,normalized.filter(x=>x!==word));
+}
 export function createSearchIndex(prompts){
  return prompts.map((p,pos)=>{
   const title=clean(p.title),description=clean(p.description),body=clean(p.template);
@@ -38,6 +55,9 @@ export function rankedSearch(index,query="",category="all",favorites=null){
    if(item.bodyTokens.has(term)){score+=2;continue}
    if(item.body.includes(term)){score+=1;continue}
    if([...item.titleTokens].some(w=>near(term,w))){score+=2;continue}
+   const aliases=synonyms.get(term)||[];
+   const alias=aliases.find(word=>item.titleTokens.has(word)||item.descriptionTokens.has(word)||item.bodyTokens.has(word));
+   if(alias){score+=item.titleTokens.has(alias)?5:item.descriptionTokens.has(alias)?3:1;continue}
    miss=true;break;
   }
   if(!miss){if(item.title.includes(q))score+=12;matches.push({p,score,pos:item.pos})}

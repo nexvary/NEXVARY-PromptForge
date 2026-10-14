@@ -7,6 +7,9 @@ on:
     paths:
       - "android/**"
       - "app.js"
+      - "search.mjs"
+      - "personal.mjs"
+      - "icons.mjs"
       - "engine.mjs"
       - "index.html"
       - "styles.css"
@@ -35,7 +38,7 @@ jobs:
       - name: Bundle offline website
         run: |
           mkdir -p android/app/src/main/assets
-          cp index.html app.js engine.mjs search.mjs styles.css icon.svg manifest.webmanifest sw.js android/app/src/main/assets/
+          cp index.html app.js engine.mjs search.mjs personal.mjs icons.mjs styles.css icon.svg manifest.webmanifest sw.js android/app/src/main/assets/
           mkdir -p /tmp/promptforge-catalog-build
           node scripts/build-catalog.mjs --out /tmp/promptforge-catalog-build
           cp /tmp/promptforge-catalog-build/catalog-manifest.json android/app/src/main/assets/
