@@ -6,7 +6,7 @@ export function buildPersonalPrompt(fields,idFactory=()=>crypto.randomUUID()){
  const id="user-"+String(idFactory()).replace(/[^a-zA-Z0-9-]/g,"").slice(0,65);
  return validate({id,category:String(fields.category||"writing"),title,
  description:description||"قالب أضفته إلى مكتبتي الشخصية",template:body,
- license:"CC0-1.0",source:"Personal / user-created"});
+ license:"PRIVATE",source:"Personal / user-created"});
 }
 export function promptQuality(text){
  const value=String(text||"").trim(),lower=value.toLowerCase();
