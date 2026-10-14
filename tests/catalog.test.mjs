@@ -33,7 +33,7 @@ test("shards account for every imported prompt",()=>{
  const rows=buildLibrary(csv).items,{files,chunks,counts}=makeShards(rows,1);
  assert.equal(chunks.reduce((n,c)=>n+c.count,0),rows.length);
  assert.equal(Object.values(counts).reduce((n,c)=>n+c,0),rows.length);
- assert.equal(Object.values(files).flatMap(JSON.parse).length,rows.length);
+ assert.equal(Object.values(files).flatMap(s=>JSON.parse(s)).length,rows.length);
 });
 test("unsupported CSV headers are rejected",()=>{
  assert.throws(()=>buildLibrary("title,body\nhello,world"),/act,prompt/);
