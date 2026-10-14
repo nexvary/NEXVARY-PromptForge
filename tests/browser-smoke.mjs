@@ -36,6 +36,7 @@ try{
  page.on("dialog",dialog=>dialog.accept());
  await page.locator("#deletePersonal").click();
  // Deletion dialog above is accepted through the registered handler in subsequent checks.
+ await page.locator("#search").fill("");
  await page.screenshot({path:"dist/browser-desktop.png",fullPage:true});
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
  mobile.on("pageerror",error=>errors.push(error.message));
