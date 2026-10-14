@@ -1,6 +1,6 @@
 # NEXVARY PromptForge — Prompt Intelligence Studio
 
-**v0.3.0 foundation:** Arabic-first, RTL, open-source prompt library, ranked multilingual search, native-packaged Android app and Windows portable desktop, offline structured prompt generator, and optional AI-powered prompt refinement through a user-hosted server.
+**v0.4.0:** Arabic-first, RTL, open-source prompt library, ranked multilingual search, native-packaged Android app and Windows portable desktop, offline structured prompt generator, and optional AI-powered prompt refinement through a user-hosted server.
 
 ## Verified source catalog
 
